@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Studio — Делаем свои приложения. С душой и AI.</title>
+<meta name="description" content="Продуктовая команда из 6 человек. Делаем свои iOS-приложения на подписке, AI — в основе. Сейчас в фокусе — AI-платформа заботы о питомце. Ищем своих." />
+<meta property="og:title" content="Studio — продуктовая команда" />
+<meta property="og:description" content="Свои iOS-приложения с AI. Полный цикл внутри команды. Ищем своих людей." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    /* ===== PLAYFUL / BRIGHT PRODUCT PALETTE ===== */
+    --bg:        #FFF7EE;   /* тёплый кремовый холст */
+    --bg-2:      #FFEFE0;
+    --surface:   #FFFFFF;
+    --ink:       #1F1726;   /* глубокий баклажан-чернила */
+    --ink-soft:  #5A5165;
+    --ink-faint: #8E8696;
+
+    /* сочные акценты */
+    --coral:     #FF5A5F;   /* коралл — главный */
+    --coral-deep:#F23E48;
+    --tang:      #FF9A3D;   /* тёплый мандарин */
+    --grape:     #7B5CFF;   /* виноградно-фиолетовый */
+    --mint:      #18C8A0;   /* свежая мята */
+    --sky:       #2BB7FF;   /* небо */
+    --sun:       #FFD23F;   /* солнечный жёлтый */
+    --pink:      #FF8FB1;   /* мягкий розовый */
+
+    --line:      rgba(31,23,38,.10);
+    --line-2:    rgba(31,23,38,.06);
+    --shadow:    rgba(60,32,80,.16);
+    --shadow-c:  rgba(255,90,95,.30);
+
+    --maxw: 1200px;
+    --gut:  clamp(18px,4.5vw,56px);
+    --r-xl: 40px;
+    --r-lg: 28px;
+    --r-md: 20px;
+    --r-sm: 14px;
+    --r-pill: 999px;
+
+    --display:'Baloo 2', system-ui, -apple-system, "Segoe UI", sans-serif;
+    --sans:'Manrope', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+    --ease: cubic-bezier(.22,.7,.28,1);
+    --bounce: cubic-bezier(.34,1.56,.5,1);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-weight:500;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--coral);color:#fff}
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--gut)}
+
+  .display{font-family:var(--display);font-weight:800;line-height:1.02;letter-spacing:-.01em}
+
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--display);font-weight:700;font-size:13px;
+    letter-spacing:.04em;text-transform:uppercase;
+    padding:7px 14px 8px;border-radius:var(--r-pill);
+    background:var(--surface);color:var(--coral-deep);
+    box-shadow:0 4px 14px var(--shadow);
+  }
+  .eyebrow .d{width:8px;height:8px;border-radius:50%;background:var(--coral)}
+
+  /* ============ NAV ============ */
+  header.nav{
+    position:sticky;top:0;z-index:60;
+    padding:14px 0;
+    background:rgba(255,247,238,.78);
+    backdrop-filter:saturate(150%) blur(14px);
+    -webkit-backdrop-filter:saturate(150%) blur(14px);
+    border-bottom:1px solid var(--line-2);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:18px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.01em}
+  .brand .blob{
+    width:34px;height:34px;border-radius:13px 17px 14px 18px;
+    background:
+      radial-gradient(circle at 32% 30%, var(--sun), transparent 55%),
+      linear-gradient(135deg,var(--coral),var(--grape));
+    box-shadow:0 6px 16px var(--shadow-c);
+    position:relative;flex:none;
+    animation:wobble 6s var(--ease) infinite;
+  }
+  .brand .blob::before,.brand .blob::after{
+    content:"";position:absolute;width:6px;height:6px;border-radius:50%;background:#fff;top:12px;
+  }
+  .brand .blob::before{left:9px}
+  .brand .blob::after{left:19px}
+  @keyframes wobble{0%,100%{border-radius:13px 17px 14px 18px}50%{border-radius:18px 13px 17px 14px}}
+  .nav-links{display:flex;align-items:center;gap:clamp(14px,2vw,28px)}
+  .nav-links a.l{font-weight:700;font-size:15px;color:var(--ink-soft);transition:color .2s}
+  .nav-links a.l:hover{color:var(--coral-deep)}
+  .nav-cta{
+    font-family:var(--display);font-weight:700;font-size:15px;
+    background:var(--ink);color:#fff;padding:11px 20px;border-radius:var(--r-pill);
+    border:none;cursor:pointer;transition:transform .2s var(--bounce),box-shadow .2s;
+    box-shadow:0 8px 20px var(--shadow);
+  }
+  .nav-cta:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 12px 26px var(--shadow)}
+  @media(max-width:820px){.nav-links a.l{display:none}}
+
+  /* ============ HERO ============ */
+  .hero{position:relative;overflow:hidden;padding-top:clamp(28px,5vh,56px)}
+  .hero::before{ /* мягкие сочные пятна на фоне */
+    content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(38% 42% at 12% 8%, rgba(255,210,63,.45), transparent 70%),
+      radial-gradient(34% 38% at 92% 6%, rgba(123,92,255,.28), transparent 70%),
+      radial-gradient(40% 46% at 88% 88%, rgba(43,183,255,.24), transparent 70%),
+      radial-gradient(36% 40% at 6% 92%, rgba(24,200,160,.22), transparent 70%);
+  }
+  .hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(28px,4vw,56px);align-items:center;padding-bottom:clamp(40px,6vh,72px)}
+  .hero-copy{min-width:0}
+  .hero-h{margin:18px 0 0;font-size:clamp(40px,6.6vw,84px)}
+  .hero-h .grad{
+    background:linear-gradient(105deg,var(--coral) 0%,var(--tang) 45%,var(--grape) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero-h .wig{display:inline-block;position:relative}
+  .hero-h .wig::after{
+    content:"";position:absolute;left:0;right:0;bottom:-.08em;height:.16em;border-radius:99px;
+    background:var(--sun);opacity:.9;z-index:-1;
+  }
+  .hero-sub{margin-top:clamp(18px,2.6vh,26px);max-width:48ch;font-size:clamp(16px,1.5vw,19px);color:var(--ink-soft);font-weight:500}
+  .hero-sub b{color:var(--ink);font-weight:800}
+
+  .hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:clamp(24px,3.4vh,34px)}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;cursor:pointer;border:none;
+    font-family:var(--display);font-weight:700;font-size:17px;
+    padding:15px 26px;border-radius:var(--r-pill);
+    transition:transform .2s var(--bounce),box-shadow .25s,filter .2s;
+  }
+  .btn .ar{transition:transform .25s var(--bounce)}
+  .btn:hover .ar{transform:translateX(4px)}
+  .btn-primary{
+    color:#fff;
+    background:linear-gradient(120deg,var(--coral),var(--coral-deep));
+    box-shadow:0 12px 26px var(--shadow-c);
+  }
+  .btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 18px 34px var(--shadow-c)}
+  .btn-ghost{
+    color:var(--ink);background:var(--surface);
+    box-shadow:0 8px 20px var(--shadow);
+  }
+  .btn-ghost:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 14px 28px var(--shadow)}
+
+  .hero-metrics{display:flex;flex-wrap:wrap;gap:10px;margin-top:clamp(26px,3.6vh,36px)}
+  .metric{
+    display:flex;align-items:baseline;gap:9px;
+    background:var(--surface);border-radius:var(--r-pill);
+    padding:9px 16px 10px;box-shadow:0 6px 16px var(--shadow);
+  }
+  .metric b{font-family:var(--display);font-weight:800;font-size:19px;line-height:1}
+  .metric span{font-size:13px;color:var(--ink-soft);font-weight:600}
+  .metric.m1 b{color:var(--coral-deep)}
+  .metric.m2 b{color:var(--grape)}
+  .metric.m3 b{color:var(--mint)}
+
+  /* hero visual */
+  .hero-visual{position:relative;min-width:0}
+  .hero-card{
+    position:relative;border-radius:var(--r-xl);overflow:hidden;
+    box-shadow:0 30px 60px -20px var(--shadow), 0 0 0 6px #fff;
+    background:linear-gradient(160deg,#fff,var(--bg-2));
+    aspect-ratio:1536/1024;
+  }
+  .hero-card img{width:100%;height:100%;object-fit:cover;display:block}
+  .hero-card::after{ /* мягкое растворение нижнего края */
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg,transparent 62%,rgba(255,255,255,.14) 100%);
+  }
+  .float-tag{
+    position:absolute;z-index:3;
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--display);font-weight:700;font-size:14px;
+    background:var(--surface);color:var(--ink);
+    padding:9px 15px;border-radius:var(--r-pill);
+    box-shadow:0 12px 26px var(--shadow);
+    animation:bob 4.5s var(--ease) infinite;
+  }
+  .float-tag .e{font-size:17px;line-height:1}
+  .ft-a{top:-14px;left:18px;color:var(--coral-deep);animation-delay:.1s}
+  .ft-b{bottom:22px;right:-10px;color:var(--grape);animation-delay:1.1s}
+  .ft-c{bottom:-12px;left:30px;color:var(--mint);animation-delay:.6s}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-9px) rotate(1.5deg)}}
+  @media(max-width:920px){
+    .hero-inner{grid-template-columns:1fr;gap:34px}
+    .hero-visual{order:-1;max-width:560px;margin:0 auto}
+    .ft-b{right:6px}
+  }
+
+  /* ============ MARQUEE ============ */
+  .marquee{position:relative;z-index:1;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);background:var(--surface);overflow:hidden;padding:14px 0}
+  .marquee-track{display:flex;gap:0;width:max-content;animation:scrollx 26s linear infinite}
+  .marquee-track .it{display:inline-flex;align-items:center;gap:12px;padding:0 26px;font-family:var(--display);font-weight:700;font-size:clamp(15px,1.7vw,19px);white-space:nowrap}
+  .marquee-track .it .s{width:9px;height:9px;border-radius:50%}
+  .marquee .it:nth-child(5n+1) .s{background:var(--coral)}
+  .marquee .it:nth-child(5n+2) .s{background:var(--tang)}
+  .marquee .it:nth-child(5n+3) .s{background:var(--mint)}
+  .marquee .it:nth-child(5n+4) .s{background:var(--sky)}
+  .marquee .it:nth-child(5n+5) .s{background:var(--grape)}
+  @keyframes scrollx{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ============ SECTION SHELL ============ */
+  section.block{padding:clamp(64px,9vh,120px) 0;position:relative}
+  .head{max-width:760px;margin-bottom:clamp(34px,5vh,56px)}
+  .head h2{font-family:var(--display);font-weight:800;font-size:clamp(30px,4.4vw,54px);line-height:1.04;margin-top:14px;letter-spacing:-.01em}
+  .head p{margin-top:14px;font-size:clamp(15px,1.5vw,18px);color:var(--ink-soft);max-width:60ch}
+
+  /* ============ WHAT WE DO — 3 colourful cards ============ */
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,24px)}
+  .pill{
+    position:relative;border-radius:var(--r-lg);padding:30px 26px 28px;overflow:hidden;
+    color:#fff;min-height:280px;display:flex;flex-direction:column;
+    box-shadow:0 18px 38px -16px var(--shadow);
+    transition:transform .3s var(--bounce),box-shadow .3s;
+  }
+  .pill:hover{transform:translateY(-6px) rotate(-.4deg)}
+  .pill.p1{background:linear-gradient(150deg,var(--coral),var(--coral-deep))}
+  .pill.p2{background:linear-gradient(150deg,var(--grape),#5a3ee0)}
+  .pill.p3{background:linear-gradient(150deg,var(--mint),#0fa384)}
+  .pill .bub{position:absolute;border-radius:50%;background:rgba(255,255,255,.16);filter:blur(2px)}
+  .pill .bub.b1{width:130px;height:130px;top:-40px;right:-30px}
+  .pill .bub.b2{width:70px;height:70px;bottom:34px;right:18px;background:rgba(255,255,255,.12)}
+  .pill .ic{
+    width:54px;height:54px;border-radius:18px;background:rgba(255,255,255,.18);
+    display:grid;place-items:center;font-size:27px;margin-bottom:18px;backdrop-filter:blur(4px);
+  }
+  .pill h3{font-family:var(--display);font-weight:800;font-size:23px;line-height:1.1;position:relative}
+  .pill p{margin-top:11px;font-size:15.5px;line-height:1.55;color:rgba(255,255,255,.92);position:relative;font-weight:500}
+  .pill .tagn{margin-top:auto;font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.04em;text-transform:uppercase;opacity:.8;position:relative;padding-top:18px}
+  @media(max-width:880px){.pillars{grid-template-columns:1fr}.pill{min-height:0}}
+
+  /* ============ FLAGSHIP / FOCUS ============ */
+  .focus{position:relative}
+  .focus .head{margin-left:auto;margin-right:auto;text-align:center;max-width:820px}
+  .focus .head p{margin-left:auto;margin-right:auto}
+  .focus-band{
+    display:inline-flex;align-items:center;gap:10px;margin:0 auto 4px;
+    font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--grape);background:rgba(123,92,255,.12);padding:7px 15px;border-radius:var(--r-pill);
+  }
+
+  .feat-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(14px,1.8vw,20px);margin-top:8px}
+  .feat{
+    position:relative;background:var(--surface);border-radius:var(--r-lg);padding:26px 24px;
+    box-shadow:0 14px 32px -18px var(--shadow);border:1px solid var(--line-2);
+    transition:transform .28s var(--bounce),box-shadow .28s;overflow:hidden;
+    display:flex;flex-direction:column;
+  }
+  .feat:hover{transform:translateY(-5px);box-shadow:0 22px 44px -18px var(--shadow)}
+  .feat .ic{
+    width:50px;height:50px;border-radius:16px;display:grid;place-items:center;font-size:25px;margin-bottom:16px;flex:none;
+  }
+  .feat h3{font-family:var(--display);font-weight:800;font-size:20px;line-height:1.12}
+  .feat p{margin-top:9px;font-size:14.8px;line-height:1.55;color:var(--ink-soft);font-weight:500}
+  .feat .corner{position:absolute;width:120px;height:120px;border-radius:50%;top:-50px;right:-40px;opacity:.16;filter:blur(4px)}
+
+  /* размеры плиток (bento) */
+  .feat.big{grid-column:span 6}
+  .feat.med{grid-column:span 6}
+  .feat.sm{grid-column:span 4}
+  @media(max-width:980px){.feat.big,.feat.med{grid-column:span 12}.feat.sm{grid-column:span 6}}
+  @media(max-width:620px){.feat.sm{grid-column:span 12}}
+
+  /* цветовые акценты фич */
+  .c-coral .ic{background:rgba(255,90,95,.14);color:var(--coral-deep)} .c-coral .corner{background:var(--coral)}
+  .c-tang  .ic{background:rgba(255,154,61,.16);color:#E07A14}        .c-tang .corner{background:var(--tang)}
+  .c-mint  .ic{background:rgba(24,200,160,.15);color:#0c9e7e}        .c-mint .corner{background:var(--mint)}
+  .c-sky   .ic{background:rgba(43,183,255,.15);color:#1592d6}        .c-sky .corner{background:var(--sky)}
+  .c-grape .ic{background:rgba(123,92,255,.15);color:var(--grape)}   .c-grape .corner{background:var(--grape)}
+  .c-pink  .ic{background:rgba(255,143,177,.18);color:#E0568A}       .c-pink .corner{background:var(--pink)}
+  .c-sun   .ic{background:rgba(255,210,63,.22);color:#C99700}        .c-sun .corner{background:var(--sun)}
+
+  /* портретные показатели в "цифровом портрете" */
+  .portrait-bars{display:flex;flex-direction:column;gap:9px;margin-top:16px}
+  .pbar{display:flex;align-items:center;gap:10px}
+  .pbar span{font-size:12.5px;font-weight:700;color:var(--ink-soft);width:120px;flex:none}
+  .pbar .track{flex:1;height:8px;border-radius:99px;background:rgba(31,23,38,.08);overflow:hidden}
+  .pbar .fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--grape),var(--sky))}
+
+  /* фичи-чипсы для журнала */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .chip{font-size:12.5px;font-weight:700;padding:6px 12px;border-radius:99px;background:rgba(31,23,38,.05);color:var(--ink-soft)}
+
+  /* ============ TEAM ============ */
+  .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,24px)}
+  .tcard{
+    position:relative;border-radius:var(--r-lg);overflow:hidden;padding:0;
+    box-shadow:0 14px 32px -16px var(--shadow);
+    transition:transform .3s var(--bounce),box-shadow .3s;
+    display:flex;flex-direction:column;min-height:340px;
+  }
+  .tcard:hover{transform:translateY(-7px)}
+  .tcard:hover .tcard-img img{transform:scale(1.05) translateY(-4px)}
+  .tcard-img{position:relative;flex:1;overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
+  .tcard-img img{width:88%;height:auto;object-fit:contain;align-self:flex-end;transition:transform .4s var(--ease);filter:drop-shadow(0 14px 22px rgba(40,20,60,.20))}
+  .tcard .meta{position:relative;z-index:2;padding:18px 20px 20px;background:var(--surface);border-top:1px solid var(--line-2)}
+  .tcard .nm{font-family:var(--display);font-weight:800;font-size:20px;line-height:1.05}
+  .tcard .rl{margin-top:4px;font-size:13.5px;font-weight:600;color:var(--ink-soft)}
+  .tcard .badge{position:absolute;top:14px;left:14px;z-index:3;font-family:var(--display);font-weight:700;font-size:12px;padding:5px 11px;border-radius:99px;color:#fff;box-shadow:0 6px 14px var(--shadow)}
+  /* фон карточек — мягкие тёплые тона */
+  .t1{background:linear-gradient(170deg,#FFE3DA,#FFD0C4)} .t1 .badge{background:var(--coral)}
+  .t2{background:linear-gradient(170deg,#EADFFF,#DCC9FF)} .t2 .badge{background:var(--grape)}
+  .t3{background:linear-gradient(170deg,#D7F6EE,#BCEFE0)} .t3 .badge{background:var(--mint)}
+  .t4{background:linear-gradient(170deg,#D6EEFF,#BEE3FF)} .t4 .badge{background:var(--sky)}
+  .t5{background:linear-gradient(170deg,#FFF0CE,#FFE6A8)} .t5 .badge{background:#E0A800}
+  .t6{background:linear-gradient(170deg,#FFE0EC,#FFCBDD)} .t6 .badge{background:var(--pink)}
+  @media(max-width:880px){.team-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:540px){.team-grid{grid-template-columns:1fr}}
+
+  /* ============ HIRING ============ */
+  .hire-wrap{
+    position:relative;border-radius:var(--r-xl);overflow:hidden;padding:clamp(34px,5vw,64px);
+    background:linear-gradient(135deg,var(--ink) 0%,#2c1f3d 55%,#3a235a 100%);
+    color:#fff;box-shadow:0 30px 60px -24px var(--shadow);
+  }
+  .hire-wrap::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(34% 50% at 88% 6%, rgba(255,90,95,.40), transparent 70%),
+      radial-gradient(30% 46% at 8% 96%, rgba(43,183,255,.32), transparent 70%),
+      radial-gradient(26% 40% at 96% 92%, rgba(255,210,63,.26), transparent 70%);
+  }
+  .hire-inner{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,4vw,52px);align-items:center}
+  .hire-h{font-family:var(--display);font-weight:800;font-size:clamp(28px,4vw,50px);line-height:1.04}
+  .hire-h .y{color:var(--sun)}
+  .hire-p{margin-top:16px;font-size:clamp(15px,1.5vw,18px);color:rgba(255,255,255,.85);max-width:52ch;font-weight:500}
+  .hire-list{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+  .role{
+    display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-weight:700;font-size:14.5px;
+    padding:10px 16px;border-radius:99px;background:rgba(255,255,255,.10);
+    border:1px solid rgba(255,255,255,.16);transition:background .2s,transform .2s var(--bounce)
+  }
+  .role:hover{background:rgba(255,255,255,.18);transform:translateY(-2px)}
+  .role .d{width:8px;height:8px;border-radius:50%}
+  .hire-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
+  .hire-perks{display:flex;flex-direction:column;gap:14px}
+  .perk{display:flex;gap:14px;align-items:flex-start;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:var(--r-md);padding:18px 20px}
+  .perk .pe{font-size:24px;line-height:1;flex:none}
+  .perk b{font-family:var(--display);font-weight:700;font-size:16.5px;display:block}
+  .perk span{font-size:14px;color:rgba(255,255,255,.78);margin-top:3px;display:block;font-weight:500}
+  @media(max-width:900px){.hire-inner{grid-template-columns:1fr;gap:30px}}
+
+  /* ============ FOOTER ============ */
+  footer.ft{padding:clamp(48px,7vh,84px) 0 38px;position:relative}
+  .ft-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:30px;align-items:flex-start}
+  .ft-brand{max-width:340px}
+  .ft-brand .brand{font-size:26px;margin-bottom:14px}
+  .ft-brand p{color:var(--ink-soft);font-size:15px;font-weight:500}
+  .ft-cols{display:flex;flex-wrap:wrap;gap:clamp(30px,5vw,64px)}
+  .ft-col h4{font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px}
+  .ft-col a{display:block;font-weight:600;font-size:15px;color:var(--ink-soft);margin-bottom:10px;transition:color .2s,transform .2s}
+  .ft-col a:hover{color:var(--coral-deep);transform:translateX(3px)}
+  .ft-bottom{margin-top:clamp(36px,5vh,52px);padding-top:24px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;align-items:center;font-size:13.5px;color:var(--ink-faint);font-weight:600}
+  .ft-socials{display:flex;gap:10px}
+  .ft-socials a{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:var(--surface);box-shadow:0 6px 14px var(--shadow);font-weight:800;font-size:14px;color:var(--ink);transition:transform .2s var(--bounce),color .2s}
+  .ft-socials a:hover{transform:translateY(-3px) rotate(-4deg);color:var(--coral-deep)}
+
+  /* ============ REVEAL ============ */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal.d1{transition-delay:.06s}
+  .reveal.d2{transition-delay:.12s}
+  .reveal.d3{transition-delay:.18s}
+  .reveal.d4{transition-delay:.24s}
+  .reveal.d5{transition-delay:.30s}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none !important}
+    .reveal{opacity:1 !important;transform:none !important;transition:none !important}
+    html{scroll-behavior:auto}
+  }
+
+  /* ============ SHOT MODE (full-page screenshot) ============ */
+  .shot .hero{min-height:0 !important;padding-top:40px;padding-bottom:20px}
+  .shot .reveal{opacity:1 !important;transform:none !important;transition:none !important}
+  .shot .marquee-track,.shot .float-tag,.shot .brand .blob{animation:none !important}
+  .shot .float-tag{transform:none !important}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand"><span class="blob" aria-hidden="true"></span>Studio</a>
+    <nav class="nav-links">
+      <a class="l" href="#do">Чем занимаемся</a>
+      <a class="l" href="#focus">Продукт</a>
+      <a class="l" href="#team">Команда</a>
+      <a class="l" href="#hire">Вакансии</a>
+      <a class="nav-cta" href="#hire">Откликнуться</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      <span class="eyebrow reveal"><span class="d"></span> Продуктовая команда · iOS · AI</span>
+      <h1 class="hero-h display reveal d1">
+        Делаем <span class="grad">свои приложения</span> — <span class="wig">с душой</span> и&nbsp;AI
+      </h1>
+      <p class="hero-sub reveal d2">
+        Нас шестеро, и мы строим <b>собственные iOS-продукты на подписке</b>. Без подрядки и чужих ТЗ.
+        Сейчас в фокусе — <b>AI-платформа заботы о питомце</b>: личный ассистент, который помогает собаке жить лучше.
+      </p>
+      <div class="hero-actions reveal d3">
+        <a class="btn btn-primary" href="#hire">Присоединиться <span class="ar">→</span></a>
+        <a class="btn btn-ghost" href="#focus">Смотреть продукт</a>
+      </div>
+      <div class="hero-metrics reveal d4">
+        <div class="metric m1"><b>6</b><span>в команде</span></div>
+        <div class="metric m2"><b>iOS</b><span>свои продукты</span></div>
+        <div class="metric m3"><b>AI</b><span>в основе</span></div>
+      </div>
+    </div>
+
+    <div class="hero-visual reveal d2">
+      <div class="hero-card">
+        <img src="assets/hero-team.png" alt="Команда Studio в офисе — шесть человек" loading="eager" decoding="async" />
+        <span class="float-tag ft-a"><span class="e">🚀</span> Идея → релиз быстро</span>
+        <span class="float-tag ft-b"><span class="e">🐶</span> Care-платформа в фокусе</span>
+        <span class="float-tag ft-c"><span class="e">✨</span> Полный цикл внутри</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="it"><span class="s"></span>Продукт</span>
+    <span class="it"><span class="s"></span>Дизайн</span>
+    <span class="it"><span class="s"></span>Разработка</span>
+    <span class="it"><span class="s"></span>Маркетинг</span>
+    <span class="it"><span class="s"></span>Аналитика</span>
+    <span class="it"><span class="s"></span>Motion</span>
+    <span class="it"><span class="s"></span>AI</span>
+    <span class="it"><span class="s"></span>Подписка</span>
+    <span class="it"><span class="s"></span>Продукт</span>
+    <span class="it"><span class="s"></span>Дизайн</span>
+    <span class="it"><span class="s"></span>Разработка</span>
+    <span class="it"><span class="s"></span>Маркетинг</span>
+    <span class="it"><span class="s"></span>Аналитика</span>
+    <span class="it"><span class="s"></span>Motion</span>
+    <span class="it"><span class="s"></span>AI</span>
+    <span class="it"><span class="s"></span>Подписка</span>
+  </div>
+</div>
+
+<!-- WHAT WE DO -->
+<section class="block" id="do">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow reveal"><span class="d"></span> Чем занимаемся</span>
+      <h2 class="reveal d1">Маленькая команда — взрослые продукты</h2>
+      <p class="reveal d2">Мы не делаем сайты на заказ. Мы придумываем, запускаем и развиваем собственные приложения — и сами на них зарабатываем.</p>
+    </div>
+    <div class="pillars">
+      <article class="pill p1 reveal d1">
+        <span class="bub b1"></span><span class="bub b2"></span>
+        <div class="ic">📱</div>
+        <h3>Свои продукты,<br>а не подрядка</h3>
+        <p>Запускаем собственные iOS-приложения и монетизируем по подписке. Сами решаем, что делать дальше — никаких чужих дедлайнов.</p>
+        <div class="tagn">Own products</div>
+      </article>
+      <article class="pill p2 reveal d2">
+        <span class="bub b1"></span><span class="bub b2"></span>
+        <div class="ic">🔄</div>
+        <h3>Полный цикл<br>в одной команде</h3>
+        <p>Продукт, дизайн, разработка, маркетинг и аналитика — всё внутри. Путь от идеи до релиза получается коротким и честным.</p>
+        <div class="tagn">End-to-end</div>
+      </article>
+      <article class="pill p3 reveal d3">
+        <span class="bub b1"></span><span class="bub b2"></span>
+        <div class="ic">🧠</div>
+        <h3>AI — не кнопка,<br>а фундамент</h3>
+        <p>Искусственный интеллект лежит в основе наших продуктов: он анализирует, подсказывает и заботится вместо рутины пользователя.</p>
+        <div class="tagn">AI-first</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- FLAGSHIP / FOCUS -->
+<section class="block focus" id="focus">
+  <div class="wrap">
+    <div class="head">
+      <span class="focus-band reveal">● Текущий фокус</span>
+      <h2 class="reveal d1">AI-платформа заботы о питомце</h2>
+      <p class="reveal d2">Не просто трекер. Личный AI-ассистент, который держит здоровье, документы, тренировки и ежедневную заботу о собаке в одной тёплой экосистеме — чтобы питомец жил лучше, а хозяин был спокоен.</p>
+    </div>
+
+    <div class="feat-grid">
+      <article class="feat big c-coral reveal d1">
+        <span class="corner"></span>
+        <div class="ic">📸</div>
+        <h3>AI-анализ здоровья по фото</h3>
+        <p>Сфотографируйте шерсть, уши, глаза или лапы — AI оценит признаки, даст персональные рекомендации и подскажет, когда пора показать собаку ветеринару.</p>
+      </article>
+
+      <article class="feat med c-sky reveal d2">
+        <span class="corner"></span>
+        <div class="ic">📄</div>
+        <h3>Документы — простым языком</h3>
+        <p>Все анализы и заключения в одном месте. AI разбирает их понятным языком, а поделиться с врачом можно по QR или ссылке за пару секунд.</p>
+      </article>
+
+      <article class="feat sm c-mint reveal d1">
+        <span class="corner"></span>
+        <div class="ic">🩺</div>
+        <h3>Health Passport</h3>
+        <p>Прививки, ревакцинация, лекарства, вес и динамика — с умными напоминаниями, чтобы ничего не пропустить.</p>
+      </article>
+
+      <article class="feat sm c-tang reveal d2">
+        <span class="corner"></span>
+        <div class="ic">🦴</div>
+        <h3>Смарт-тренировки</h3>
+        <p>AI-кинолог собирает персональный план под вашу собаку и ведёт шаг за шагом, без воды.</p>
+      </article>
+
+      <article class="feat sm c-grape reveal d3">
+        <span class="corner"></span>
+        <div class="ic">🧬</div>
+        <h3>Цифровой портрет</h3>
+        <p>Профиль характера по 6 показателям — и видно, как растёт прогресс.</p>
+        <div class="portrait-bars" aria-hidden="true">
+          <div class="pbar"><span>Bond · связь</span><div class="track"><div class="fill" style="width:86%"></div></div></div>
+          <div class="pbar"><span>Focus · фокус</span><div class="track"><div class="fill" style="width:64%"></div></div></div>
+          <div class="pbar"><span>Confidence</span><div class="track"><div class="fill" style="width:78%"></div></div></div>
+        </div>
+      </article>
+
+      <article class="feat med c-pink reveal d1">
+        <span class="corner"></span>
+        <div class="ic">📔</div>
+        <h3>Журнал самочувствия</h3>
+        <p>Отмечайте настроение, активность, аппетит и сон — а AI находит закономерности и подсказывает, на что обратить внимание.</p>
+        <div class="chips" aria-hidden="true">
+          <span class="chip">Настроение</span><span class="chip">Активность</span><span class="chip">Аппетит</span><span class="chip">Сон</span><span class="chip">Поведение</span>
+        </div>
+      </article>
+
+      <article class="feat big c-sun reveal d2">
+        <span class="corner"></span>
+        <div class="ic">🧰</div>
+        <h3>Toolkit владельца · AI-помощники 24/7</h3>
+        <p>Галерея питомца и ассистенты по питанию, уходу и здоровью всегда под рукой. Спросите что угодно о своей собаке — ответ придёт мгновенно, в любой момент дня и ночи.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="block" id="team">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow reveal"><span class="d"></span> Команда</span>
+      <h2 class="reveal d1">Шестеро, кто всё это делает</h2>
+      <p class="reveal d2">Каждый отвечает за свою зону — но решения принимаем вместе. Без иерархии ради иерархии.</p>
+    </div>
+    <div class="team-grid">
+      <article class="tcard t1 reveal d1">
+        <span class="badge">CEO</span>
+        <div class="tcard-img"><img src="assets/team/01_semyon_ceo.png" alt="Семён — CEO и основатель" loading="lazy" decoding="async"></div>
+        <div class="meta"><div class="nm">Семён</div><div class="rl">CEO · Founder</div></div>
+      </article>
+      <article class="tcard t3 reveal d2">
+        <span class="badge">Product</span>
+        <div class="tcard-img"><img src="assets/team/03_danila_product.png" alt="Данила — продуктолог" loading="lazy" decoding="async"></div>
+        <div class="meta"><div class="nm">Данила</div><div class="rl">Продуктолог</div></div>
+      </article>
+      <article class="tcard t4 reveal d3">
+        <span class="badge">PM</span>
+        <div class="tcard-img"><img src="assets/team/04_kirill_pm.png" alt="Кирилл — проджект-менеджер и медиабаер" loading="lazy" decoding="async"></div>
+        <div class="meta"><div class="nm">Кирилл</div><div class="rl">Project Manager · Медиабаер</div></div>
+      </article>
+      <article class="tcard t5 reveal d1">
+        <span class="badge">UX/UI</span>
+        <div class="tcard-img"><img src="assets/team/05_denis_uxui.png" alt="Денис — UX/UI дизайнер" loading="lazy" decoding="async"></div>
+        <div class="meta"><div class="nm">Денис</div><div class="rl">UX/UI дизайнер</div></div>
+      </article>
+      <article class="tcard t2 reveal d2">
+        <span class="badge">Motion</span>
+        <div class="tcard-img"><img src="assets/team/02_anna_motion.png" alt="Анна — motion-дизайнер" loading="lazy" decoding="async"></div>
+        <div class="meta"><div class="nm">Анна</div><div class="rl">Motion-дизайнер</div></div>
+      </article>
+      <article class="tcard t6 reveal d3">
+        <span class="badge">iOS</span>
+        <div class="tcard-img"><img src="assets/team/06_kirill_dev.png" alt="Кирилл — iOS-разработчик" loading="lazy" decoding="async"></div>
+        <div class="meta"><div class="nm">Кирилл</div><div class="rl">iOS-разработчик</div></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- HIRING -->
+<section class="block" id="hire">
+  <div class="wrap">
+    <div class="hire-wrap reveal">
+      <div class="hire-inner">
+        <div>
+          <h2 class="hire-h">Ищем <span class="y">своих</span> людей</h2>
+          <p class="hire-p">Если хочется делать продукты, которыми сам пользуешься, а не закрывать чужие таски — нам по пути. У нас короткий путь от идеи до релиза, свои приложения и команда без подрядной рутины.</p>
+          <div class="hire-list">
+            <span class="role"><span class="d" style="background:var(--pink)"></span> iOS-разработчик</span>
+            <span class="role"><span class="d" style="background:var(--sun)"></span> UX/UI дизайнер</span>
+            <span class="role"><span class="d" style="background:var(--mint)"></span> Motion-дизайнер</span>
+            <span class="role"><span class="d" style="background:var(--sky)"></span> Маркетолог · UA</span>
+            <span class="role"><span class="d" style="background:var(--coral)"></span> Продакт</span>
+          </div>
+          <div class="hire-cta">
+            <a class="btn btn-primary" href="mailto:hello@studio.app?subject=Хочу к вам в команду">Откликнуться <span class="ar">→</span></a>
+            <a class="btn btn-ghost" href="#focus">Сначала посмотреть продукт</a>
+          </div>
+        </div>
+        <div class="hire-perks">
+          <div class="perk"><span class="pe">⚡</span><div><b>Коротко от идеи до релиза</b><span>Решили — сделали. Минимум согласований, максимум влияния на продукт.</span></div></div>
+          <div class="perk"><span class="pe">🎯</span><div><b>Свои продукты</b><span>Ты делаешь приложение, которым гордишься и пользуешься сам.</span></div></div>
+          <div class="perk"><span class="pe">🤝</span><div><b>Команда без рутины</b><span>Шесть человек, общий вектор и нормальные люди вокруг.</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="ft" id="contacts">
+  <div class="wrap">
+    <div class="ft-top">
+      <div class="ft-brand">
+        <a href="#top" class="brand"><span class="blob" aria-hidden="true"></span>Studio</a>
+        <p>Продуктовая команда. Делаем свои iOS-приложения с AI и заботимся о тех, для кого они созданы — от хозяев до их питомцев.</p>
+      </div>
+      <div class="ft-cols">
+        <div class="ft-col">
+          <h4>Навигация</h4>
+          <a href="#do">Чем занимаемся</a>
+          <a href="#focus">Продукт</a>
+          <a href="#team">Команда</a>
+          <a href="#hire">Вакансии</a>
+        </div>
+        <div class="ft-col">
+          <h4>Контакты</h4>
+          <a href="mailto:hello@studio.app">hello@studio.app</a>
+          <a href="#" target="_blank" rel="noopener">Telegram</a>
+          <a href="#" target="_blank" rel="noopener">Instagram</a>
+        </div>
+      </div>
+    </div>
+    <div class="ft-bottom">
+      <span>© 2026 Studio. Сделано с заботой 🐾</span>
+      <div class="ft-socials">
+        <a href="mailto:hello@studio.app" aria-label="Почта">@</a>
+        <a href="#" aria-label="Telegram" target="_blank" rel="noopener">TG</a>
+        <a href="#" aria-label="Instagram" target="_blank" rel="noopener">IG</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var isShot = location.search.indexOf('shot') !== -1 || location.hash.indexOf('shot') !== -1;
+    if (isShot) document.documentElement.classList.add('shot');
+
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (isShot || reduce || !('IntersectionObserver' in window)) {
+      document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+      return;
+    }
+
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  })();
+</script>
+</body>
+</html>
