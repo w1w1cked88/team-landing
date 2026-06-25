@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Студия — продуктовая команда</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    /* deep cinematic blacks */
+    --bg:#040406;
+    --bg-2:#07070c;
+    --ink:#020203;
+    /* warm stage spotlight */
+    --beam:#fff4dd;
+    --beam-warm:#ffd9a0;
+    --amber:#f5b566;
+    /* cool counter-fill */
+    --violet:#8b6cf0;
+    --violet-2:#a855f7;
+    --violet-soft:#cdbcff;
+    --cyan:#5fd9f0;
+    /* type */
+    --text:#f6f4ee;
+    --muted:#8d8a99;
+    --muted-2:#6a6878;
+    --hair:rgba(255,255,255,.10);
+    --maxw:1280px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    background:var(--ink); color:var(--text);
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  ::selection{background:rgba(245,181,102,.28);color:#fff}
+
+  /* =========================================================
+     STAGE / AMBIENT — deep theatre with a volumetric spotlight
+     ========================================================= */
+  .stage{
+    position:relative; z-index:0; overflow:hidden;
+    background:
+      /* tight warm core where the team sits (upper-right) */
+      radial-gradient(48% 60% at 76% 30%, rgba(255,221,170,.16), transparent 60%),
+      /* broad amber wash spilling down the right */
+      radial-gradient(70% 90% at 82% 46%, rgba(245,181,102,.10), transparent 66%),
+      /* cool violet counter-fill on the left to seat the type */
+      radial-gradient(60% 70% at 8% 70%, rgba(120,90,230,.12), transparent 62%),
+      /* base vertical fade */
+      linear-gradient(180deg,#08070c 0%, #050507 52%, #030304 100%),
+      var(--ink);
+  }
+
+  /* the volumetric light beam falling from top onto the team */
+  .beam{position:absolute; z-index:1; pointer-events:none; top:-14%; right:9%;
+    width:60vw; max-width:880px; height:128%;
+    transform:rotate(13deg); transform-origin:top center;
+    background:
+      conic-gradient(from 180deg at 50% 0%,
+        transparent 0deg,
+        rgba(255,240,210,.00) 6deg,
+        rgba(255,238,205,.16) 10deg,
+        rgba(255,232,190,.30) 12deg,
+        rgba(255,238,205,.16) 14deg,
+        rgba(255,240,210,.00) 18deg,
+        transparent 24deg);
+    filter:blur(8px);
+    -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 60%,transparent 92%);
+    mask-image:linear-gradient(to bottom,#000 0,#000 60%,transparent 92%);
+    mix-blend-mode:screen;
+    opacity:.9;
+    animation:beamShimmer 7.5s ease-in-out infinite;
+  }
+  /* a second, softer beam for body / haze */
+  .beam.soft{right:5%; width:74vw; max-width:1040px; transform:rotate(11deg);
+    filter:blur(34px); opacity:.55; animation-duration:9.5s; animation-delay:-2s}
+  @keyframes beamShimmer{
+    0%,100%{opacity:.78; transform:rotate(13deg) translateX(0)}
+    50%{opacity:.96; transform:rotate(13deg) translateX(-10px)}
+  }
+
+  /* the bright "gobo" source flare at the very top where the lamp is */
+  .lamp{position:absolute; z-index:2; pointer-events:none; top:-160px; right:24%;
+    width:520px; height:520px;
+    background:radial-gradient(circle at 50% 50%, rgba(255,244,222,.55), rgba(255,221,170,.18) 28%, transparent 60%);
+    filter:blur(20px); mix-blend-mode:screen; opacity:.8;
+    animation:lampPulse 6s ease-in-out infinite}
+  @keyframes lampPulse{50%{opacity:1; transform:scale(1.04)}}
+
+  /* drifting dust motes inside the beam */
+  .dust{position:absolute; z-index:2; inset:0; pointer-events:none; mix-blend-mode:screen; opacity:.5;
+    background-image:
+      radial-gradient(1.4px 1.4px at 70% 22%, rgba(255,245,225,.9), transparent 60%),
+      radial-gradient(1px 1px at 76% 38%, rgba(255,240,215,.7), transparent 60%),
+      radial-gradient(1.6px 1.6px at 64% 30%, rgba(255,238,210,.8), transparent 60%),
+      radial-gradient(1px 1px at 80% 18%, rgba(255,244,224,.6), transparent 60%),
+      radial-gradient(1.2px 1.2px at 73% 48%, rgba(255,240,220,.7), transparent 60%),
+      radial-gradient(1px 1px at 68% 56%, rgba(255,238,214,.55), transparent 60%);
+    -webkit-mask-image:radial-gradient(40% 70% at 74% 34%, #000 10%, transparent 75%);
+    mask-image:radial-gradient(40% 70% at 74% 34%, #000 10%, transparent 75%);
+    animation:dustDrift 12s linear infinite}
+  @keyframes dustDrift{
+    0%{transform:translateY(0)}
+    100%{transform:translateY(-22px)}
+  }
+
+  /* faint architectural grid, gently lit */
+  .grid{position:absolute; inset:0; z-index:1; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(190,180,220,.05) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(190,180,220,.05) 1px,transparent 1px);
+    background-size:72px 72px;
+    -webkit-mask-image:radial-gradient(ellipse 90% 70% at 60% 38%,#000 28%,transparent 78%);
+    mask-image:radial-gradient(ellipse 90% 70% at 60% 38%,#000 28%,transparent 78%)}
+
+  /* strong cinematic vignette pulling the corners into black */
+  .vignette{position:absolute; inset:0; z-index:6; pointer-events:none;
+    background:
+      radial-gradient(120% 120% at 70% 36%, transparent 42%, rgba(2,2,3,.55) 78%, rgba(2,2,3,.92) 100%),
+      linear-gradient(180deg, rgba(2,2,3,.4) 0%, transparent 16%, transparent 78%, rgba(2,2,3,.78) 100%)}
+
+  /* film grain */
+  .noise{position:absolute; inset:0; z-index:7; pointer-events:none; opacity:.045; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  /* =========================================================
+     NAV
+     ========================================================= */
+  header.nav{position:sticky;top:0;z-index:60;transition:.35s ease}
+  header.nav.scrolled{backdrop-filter:blur(16px) saturate(120%);
+    background:linear-gradient(180deg,rgba(6,6,10,.82),rgba(6,6,10,.42));
+    border-bottom:1px solid rgba(255,255,255,.07)}
+  .nav-in{max-width:var(--maxw);margin:0 auto;padding:20px 32px;
+    display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .logo{display:flex;align-items:center;gap:11px;font-family:'Space Grotesk';font-weight:700;font-size:20px;letter-spacing:.2px}
+  .logo .mark{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:17px;
+    color:#1a1206;
+    background:linear-gradient(140deg,#ffe6bd,#f5b566 55%,#e08a3c);
+    box-shadow:0 6px 22px rgba(245,181,102,.40), inset 0 1px 1px rgba(255,255,255,.6)}
+  .nav-links{display:flex;gap:34px;font-size:14.5px;color:var(--muted);font-weight:500}
+  .nav-links a{position:relative;transition:.2s;letter-spacing:.01em}
+  .nav-links a::after{content:"";position:absolute;left:0;right:100%;bottom:-6px;height:1px;
+    background:linear-gradient(90deg,var(--amber),transparent);transition:right .3s ease}
+  .nav-links a:hover{color:var(--text)}
+  .nav-links a:hover::after{right:0}
+  .nav-cta{padding:10px 20px;border-radius:11px;font-weight:600;font-size:14.5px;
+    border:1px solid rgba(255,255,255,.14);
+    background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+    transition:.28s}
+  .nav-cta:hover{border-color:rgba(245,181,102,.6);color:#fff;
+    box-shadow:0 0 0 3px rgba(245,181,102,.12), 0 8px 22px rgba(245,181,102,.16)}
+  @media(max-width:860px){.nav-links{display:none}}
+
+  /* =========================================================
+     HERO — text left, team photo right on the lit stage
+     ========================================================= */
+  .hero{position:relative;z-index:2;min-height:calc(100vh - 82px);
+    display:flex;align-items:center;overflow:hidden;padding:40px 0 0}
+  .wrap{position:relative;z-index:5;max-width:var(--maxw);margin:0 auto;padding:0 32px;width:100%}
+  .hero-copy{max-width:600px;text-align:left}
+
+  /* eyebrow — thin uppercase tracked */
+  .eyebrow{display:inline-flex;align-items:center;gap:13px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;font-weight:500;letter-spacing:.34em;text-transform:uppercase;
+    color:var(--muted);}
+  .eyebrow .tick{width:30px;height:1px;background:linear-gradient(90deg,transparent,var(--amber));}
+  .eyebrow .pip{width:6px;height:6px;border-radius:50%;background:var(--amber);
+    box-shadow:0 0 12px 2px rgba(245,181,102,.7);animation:pip 2.6s ease-in-out infinite}
+  @keyframes pip{50%{opacity:.35;box-shadow:0 0 4px 1px rgba(245,181,102,.3)}}
+
+  /* big bold editorial headline */
+  h1{font-family:'Space Grotesk';font-weight:700;line-height:1.02;letter-spacing:-.025em;
+    font-size:clamp(44px,5.4vw,76px);margin:26px 0 0;text-wrap:balance}
+  h1 .grad{position:relative;
+    background:linear-gradient(96deg,#ffd9a0 0%,#f5b566 42%,#cdbcff 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 0 42px rgba(245,181,102,.18)}
+
+  .sub{margin:24px 0 0;max-width:48ch;font-size:clamp(16px,1.45vw,19px);
+    color:var(--muted);line-height:1.62;font-weight:400}
+
+  /* CTA */
+  .cta{display:flex;gap:16px;justify-content:flex-start;flex-wrap:wrap;margin-top:40px}
+  .btn{position:relative;overflow:hidden;padding:16px 30px;border-radius:13px;
+    font-weight:600;font-size:16px;cursor:pointer;transition:.28s cubic-bezier(.2,.7,.2,1);
+    border:1px solid transparent;display:inline-flex;align-items:center;gap:10px;
+    letter-spacing:.01em}
+  .btn-primary{color:#1c1305;
+    background:linear-gradient(140deg,#ffe6bd,#f5b566 52%,#e89a45);
+    box-shadow:0 14px 38px rgba(245,181,102,.34), inset 0 1px 1px rgba(255,255,255,.55)}
+  .btn-primary::before{content:"";position:absolute;inset:0;border-radius:inherit;
+    background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.55) 50%,transparent 65%);
+    transform:translateX(-130%);transition:transform .7s ease}
+  .btn-primary:hover{transform:translateY(-2px);
+    box-shadow:0 20px 50px rgba(245,181,102,.5), inset 0 1px 1px rgba(255,255,255,.6)}
+  .btn-primary:hover::before{transform:translateX(130%)}
+  .btn-ghost{color:var(--text);
+    background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
+    border-color:rgba(255,255,255,.16);backdrop-filter:blur(6px)}
+  .btn-ghost:hover{transform:translateY(-2px);border-color:rgba(205,188,255,.55);
+    background:rgba(139,108,240,.10);box-shadow:0 12px 30px rgba(0,0,0,.4)}
+
+  /* stats with hairline dividers */
+  .stats{display:flex;align-items:flex-start;flex-wrap:wrap;margin-top:48px}
+  .stat{position:relative;padding:0 32px}
+  .stat:first-child{padding-left:0}
+  .stat + .stat::before{content:"";position:absolute;left:0;top:4px;bottom:4px;width:1px;
+    background:linear-gradient(180deg,transparent,var(--hair),transparent)}
+  .stat .num{font-family:'Space Grotesk';font-weight:700;font-size:34px;line-height:1;
+    background:linear-gradient(160deg,#ffffff 0%,#ffe1b4 60%,#f5b566 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    letter-spacing:-.01em}
+  .stat .lbl{color:var(--muted-2);font-size:13px;margin-top:8px;letter-spacing:.02em;line-height:1.35;max-width:13ch}
+
+  /* =========================================================
+     HERO PHOTO — anchored right, dissolving into the stage,
+     stage-floor reflection + glowing horizon line below.
+     ========================================================= */
+  .hero-photo{position:absolute;top:0;right:0;bottom:0;width:60%;z-index:3;
+    display:flex;align-items:center;justify-content:flex-end}
+  .photo-stack{position:relative;width:100%;height:88%;display:flex;align-items:flex-end;justify-content:flex-end}
+
+  /* warm rim glow seating the team into the beam */
+  .hero-photo .glow{position:absolute;right:5%;top:40%;transform:translateY(-50%);
+    width:80%;height:78%;z-index:0;
+    background:radial-gradient(54% 58% at 60% 46%,rgba(245,181,102,.42),transparent 70%);
+    filter:blur(60px)}
+
+  .hero-photo img{position:relative;z-index:2;width:100%;height:100%;
+    object-fit:contain;object-position:bottom right;
+    -webkit-mask-image:
+      linear-gradient(to right,transparent 0,#000 30%,#000 100%),
+      linear-gradient(to bottom,transparent 0,#000 6%,#000 96%,transparent 100%);
+    -webkit-mask-composite:source-in;
+    mask-image:
+      linear-gradient(to right,transparent 0,#000 30%,#000 100%),
+      linear-gradient(to bottom,transparent 0,#000 6%,#000 96%,transparent 100%);
+    mask-composite:intersect;
+    animation:floatY 10s ease-in-out infinite}
+  @keyframes floatY{50%{transform:translateY(-8px)}}
+
+  /* reflection of the team in the "stage floor" */
+  .reflection{position:absolute;z-index:1;right:0;bottom:-2%;width:100%;height:32%;
+    display:flex;align-items:flex-start;justify-content:flex-end;pointer-events:none;opacity:.16}
+  .reflection img{width:100%;height:auto;max-height:100%;object-fit:contain;object-position:top right;
+    transform:scaleY(-1);filter:blur(2px) saturate(.7);
+    -webkit-mask-image:linear-gradient(to bottom,#000 0,transparent 72%),linear-gradient(to right,transparent 0,#000 36%);
+    -webkit-mask-composite:source-in;
+    mask-image:linear-gradient(to bottom,#000 0,transparent 72%),linear-gradient(to right,transparent 0,#000 36%);
+    mask-composite:intersect}
+
+  /* the glowing horizon line — stage floor edge under the team */
+  .horizon{position:absolute;z-index:2;left:18%;right:0;
+    bottom:calc(12% - 2px);height:1px;pointer-events:none;
+    background:linear-gradient(90deg,transparent 0,rgba(245,181,102,.0) 8%,rgba(245,181,102,.85) 46%,rgba(255,238,205,.95) 60%,rgba(245,181,102,.5) 78%,transparent 100%);
+    box-shadow:0 0 18px 1px rgba(245,181,102,.55), 0 0 50px 6px rgba(245,181,102,.22)}
+  .horizon::after{content:"";position:absolute;left:30%;right:0;top:-46px;height:46px;
+    background:linear-gradient(180deg,transparent,rgba(245,181,102,.14));
+    -webkit-mask-image:linear-gradient(to right,transparent,#000 40%,#000 80%,transparent);
+    mask-image:linear-gradient(to right,transparent,#000 40%,#000 80%,transparent)}
+
+  /* =========================================================
+     RESPONSIVE — stack on mobile
+     ========================================================= */
+  @media(max-width:980px){
+    .hero{flex-direction:column;min-height:auto;padding:18px 0 0}
+    .hero-copy{max-width:none;text-align:center;margin:0 auto}
+    .eyebrow{justify-content:center}
+    .sub{margin-left:auto;margin-right:auto}
+    .cta,.stats{justify-content:center}
+    .stats{gap:0}
+    .beam{right:50%;transform:translateX(50%) rotate(0deg);width:120vw;top:-30%;height:80%}
+    .beam.soft{transform:translateX(50%) rotate(0deg)}
+    .lamp{right:50%;transform:translateX(50%);top:-220px}
+
+    .hero-photo{position:relative;width:100%;height:auto;order:2;margin-top:34px;justify-content:center}
+    .photo-stack{height:auto;justify-content:center}
+    .hero-photo .glow{right:auto;left:50%;transform:translate(-50%,-50%);width:92%;height:74%}
+    .hero-photo img{height:auto;max-height:none;object-position:bottom center;
+      -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 14%,#000 95%,transparent 100%);
+      mask-image:linear-gradient(to bottom,transparent 0,#000 14%,#000 95%,transparent 100%)}
+    .reflection{display:none}
+    .horizon{left:8%;right:8%;bottom:1%}
+    .vignette{background:radial-gradient(140% 100% at 50% 30%,transparent 48%,rgba(2,2,3,.85) 100%)}
+  }
+  @media(max-width:560px){
+    .nav-in{padding:16px 20px}
+    .wrap{padding:0 20px}
+    .stat{padding:0 18px}
+    .cta .btn{flex:1 1 100%;justify-content:center}
+  }
+
+  /* =========================================================
+     ENTRANCE REVEALS
+     ========================================================= */
+  .rv{opacity:0;transform:translateY(28px);animation:rise 1s cubic-bezier(.2,.7,.2,1) forwards}
+  .rv-photo{opacity:0;transform:translateY(20px) scale(.985);
+    animation:risePhoto 1.4s cubic-bezier(.2,.7,.2,1) .25s forwards}
+  .d1{animation-delay:.10s}.d2{animation-delay:.24s}.d3{animation-delay:.40s}
+  .d4{animation-delay:.56s}.d5{animation-delay:.72s}
+  @keyframes rise{to{opacity:1;transform:none}}
+  @keyframes risePhoto{to{opacity:1;transform:none}}
+  /* beam/lamp fade-in so the stage "lights up" */
+  .beam,.beam.soft,.lamp,.horizon{opacity:0;animation-name:lightUp;animation-duration:1.8s;
+    animation-timing-function:ease-out;animation-fill-mode:forwards;animation-delay:.2s}
+  .beam{animation:lightUp 1.8s ease-out .2s forwards, beamShimmer 7.5s ease-in-out 2s infinite}
+  .beam.soft{animation:lightUp 1.8s ease-out .2s forwards, beamShimmer 9.5s ease-in-out 2s infinite}
+  .lamp{animation:lightUp 1.8s ease-out .2s forwards, lampPulse 6s ease-in-out 2s infinite}
+  @keyframes lightUp{from{opacity:0}to{opacity:1}}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none !important;}
+    .rv,.rv-photo{opacity:1;transform:none}
+    .beam,.beam.soft,.lamp,.horizon{opacity:1}
+  }
+</style>
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="nav-in">
+      <div class="logo"><span class="mark">✦</span> Studio</div>
+      <nav class="nav-links">
+        <a href="#">Услуги</a><a href="#">Кейсы</a><a href="#">Команда</a><a href="#">Контакты</a>
+      </nav>
+      <a href="#" class="nav-cta">Обсудить проект</a>
+    </div>
+  </header>
+
+  <section class="hero stage">
+    <!-- volumetric stage lighting -->
+    <div class="grid"></div>
+    <div class="beam soft"></div>
+    <div class="beam"></div>
+    <div class="lamp"></div>
+    <div class="dust"></div>
+
+    <!-- team photo, anchored right, dissolving into the stage -->
+    <div class="hero-photo">
+      <div class="photo-stack rv-photo">
+        <span class="glow"></span>
+        <div class="reflection" aria-hidden="true">
+          <img src="assets/hero-team.png" alt="" />
+        </div>
+        <img src="assets/hero-team.png" alt="Наша продуктовая команда за работой" />
+        <span class="horizon"></span>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="hero-copy">
+        <span class="eyebrow rv d1">
+          <span class="tick"></span>
+          <span class="pip"></span>
+          Продуктовая команда полного цикла
+        </span>
+
+        <h1 class="rv d2">Создаём цифровые продукты <span class="grad">под ключ</span></h1>
+
+        <p class="sub rv d3">
+          Дизайн, разработка и маркетинг — одной слаженной командой.
+          От идеи и прототипа до запуска и роста продукта.
+        </p>
+
+        <div class="cta rv d4">
+          <a href="#" class="btn btn-primary">Обсудить проект →</a>
+          <a href="#" class="btn btn-ghost">Смотреть кейсы</a>
+        </div>
+
+        <div class="stats rv d5">
+          <div class="stat"><div class="num">30+</div><div class="lbl">проектов запущено</div></div>
+          <div class="stat"><div class="num">6</div><div class="lbl">профильных экспертов</div></div>
+          <div class="stat"><div class="num">5 лет</div><div class="lbl">в разработке</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- cinematic overlays on top -->
+    <div class="vignette"></div>
+    <div class="noise"></div>
+  </section>
+
+  <script>
+    const nav=document.getElementById('nav');
+    addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>20),{passive:true});
+
+    // subtle pointer parallax — the lit team & ambient glow breathe with the cursor.
+    // (the light beams keep their own CSS shimmer; we only drive elements with no
+    //  competing transform animation so nothing fights.)
+    const photo=document.querySelector('.photo-stack');
+    const glow=document.querySelector('.hero-photo .glow');
+    const dust=document.querySelector('.dust');
+    const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+    if(!reduce && matchMedia('(min-width:981px)').matches){
+      let tx=0,ty=0,cx=0,cy=0;
+      addEventListener('pointermove',e=>{
+        tx=(e.clientX/innerWidth-.5);
+        ty=(e.clientY/innerHeight-.5);
+      },{passive:true});
+      const start=()=>{
+        (function loop(){
+          cx+=(tx-cx)*.06; cy+=(ty-cy)*.06;
+          if(photo) photo.style.transform=`translate(${cx*-9}px,${cy*-7}px)`;
+          if(glow)  glow.style.transform=`translateY(-50%) translate(${cx*16}px,${cy*10}px)`;
+          if(dust)  dust.style.opacity=String(.42+Math.abs(cx)*.3);
+          requestAnimationFrame(loop);
+        })();
+      };
+      // let the entrance animations settle before taking over the transform
+      setTimeout(start,2100);
+    }
+  </script>
+</body>
+</html>

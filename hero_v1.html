@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Студия — продуктовая команда</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#05050c;
+    --bg2:#080714;
+    --violet:#8b5cf6;
+    --violet-2:#a855f7;
+    --violet-soft:#c9bcff;
+    --indigo:#5b6bff;
+    --cyan:#34e0e8;
+    --text:#f5f4fc;
+    --muted:#a6a3c0;
+    --glass:rgba(255,255,255,.05);
+    --glass-2:rgba(255,255,255,.07);
+    --stroke:rgba(180,168,255,.20);
+    --maxw:1280px;
+    --r:22px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    background:var(--bg); color:var(--text);
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;
+    position:relative;
+  }
+  a{color:inherit;text-decoration:none}
+
+  /* ============ LIVING AURORA BACKDROP ============ */
+  .aurora{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;
+    background:
+      radial-gradient(120% 90% at 50% -10%, #100a2a 0%, transparent 55%),
+      radial-gradient(100% 80% at 100% 100%, #0a0820 0%, transparent 60%),
+      linear-gradient(180deg,var(--bg) 0%, var(--bg2) 100%);}
+  .blob{position:absolute;border-radius:50%;filter:blur(90px);mix-blend-mode:screen;
+    will-change:transform,opacity}
+  .a1{width:760px;height:680px;left:8%;top:-220px;opacity:.62;
+      background:radial-gradient(circle at 50% 50%, #7c3aed 0%, #5b21b6 38%, transparent 68%);
+      animation:drift1 26s ease-in-out infinite}
+  .a2{width:680px;height:640px;left:-160px;top:34%;opacity:.50;
+      background:radial-gradient(circle at 50% 50%, #4f5bff 0%, #1e3a8a 40%, transparent 70%);
+      animation:drift2 32s ease-in-out infinite}
+  .a3{width:620px;height:600px;right:6%;top:8%;opacity:.46;
+      background:radial-gradient(circle at 50% 50%, #1fd9e6 0%, #0e7490 42%, transparent 70%);
+      animation:drift3 30s ease-in-out infinite}
+  .a4{width:560px;height:560px;right:-120px;top:54%;opacity:.40;
+      background:radial-gradient(circle at 50% 50%, #b026ff 0%, #7e1f6b 42%, transparent 72%);
+      animation:drift4 36s ease-in-out infinite}
+  @keyframes drift1{
+    0%,100%{transform:translate(0,0) scale(1)}
+    33%{transform:translate(80px,60px) scale(1.12)}
+    66%{transform:translate(-40px,30px) scale(.95)}}
+  @keyframes drift2{
+    0%,100%{transform:translate(0,0) scale(1)}
+    40%{transform:translate(120px,-40px) scale(1.1)}
+    70%{transform:translate(40px,40px) scale(.92)}}
+  @keyframes drift3{
+    0%,100%{transform:translate(0,0) scale(1)}
+    35%{transform:translate(-90px,50px) scale(1.08)}
+    65%{transform:translate(-30px,-30px) scale(.96)}}
+  @keyframes drift4{
+    0%,100%{transform:translate(0,0) scale(1)}
+    50%{transform:translate(-70px,-60px) scale(1.14)}}
+
+  /* faint mesh grid that fades toward edges */
+  .grid{position:absolute;inset:0;z-index:1;
+    background-image:linear-gradient(rgba(160,150,235,.045) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(160,150,235,.045) 1px,transparent 1px);
+    background-size:62px 62px;
+    -webkit-mask-image:radial-gradient(ellipse 85% 65% at 40% 35%,#000 30%,transparent 78%);
+    mask-image:radial-gradient(ellipse 85% 65% at 40% 35%,#000 30%,transparent 78%);}
+
+  /* film grain */
+  .grain{position:fixed;inset:-50%;z-index:2;pointer-events:none;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grainShift 7s steps(6) infinite}
+  @keyframes grainShift{
+    0%{transform:translate(0,0)}20%{transform:translate(-6%,3%)}40%{transform:translate(4%,-5%)}
+    60%{transform:translate(-3%,4%)}80%{transform:translate(5%,2%)}100%{transform:translate(0,0)}}
+
+  /* top vignette so nav glass reads */
+  .vignette{position:fixed;inset:0;z-index:3;pointer-events:none;
+    background:
+      radial-gradient(140% 100% at 50% 0%, transparent 60%, rgba(3,3,9,.55) 100%),
+      linear-gradient(180deg, rgba(5,5,12,.4) 0%, transparent 22%);}
+
+  /* ============ NAV — frosted glass ============ */
+  header.nav{position:sticky;top:0;z-index:50;padding:14px 18px}
+  .nav-in{max-width:var(--maxw);margin:0 auto;padding:12px 18px 12px 22px;
+    display:flex;align-items:center;justify-content:space-between;gap:24px;
+    border-radius:18px;
+    background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));
+    border:1px solid rgba(255,255,255,.10);
+    box-shadow:0 1px 0 rgba(255,255,255,.10) inset,
+               0 16px 50px -22px rgba(0,0,0,.7),
+               0 0 0 1px rgba(120,100,255,.04);
+    -webkit-backdrop-filter:blur(20px) saturate(150%);
+    backdrop-filter:blur(20px) saturate(150%);
+    transition:.4s cubic-bezier(.2,.7,.2,1)}
+  header.nav.scrolled .nav-in{background:linear-gradient(180deg,rgba(12,10,26,.78),rgba(8,7,18,.7));
+    border-color:rgba(180,168,255,.16)}
+  .logo{display:flex;align-items:center;gap:11px;font-family:'Space Grotesk';font-weight:700;font-size:20px;letter-spacing:.2px}
+  .logo .mark{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-size:17px;color:#fff;
+    background:linear-gradient(135deg,var(--violet),var(--indigo));
+    box-shadow:0 8px 22px rgba(124,58,237,.55),0 1px 0 rgba(255,255,255,.35) inset}
+  .nav-links{display:flex;gap:8px;font-size:14.5px}
+  .nav-links a{padding:9px 15px;border-radius:11px;color:var(--muted);transition:.22s;position:relative}
+  .nav-links a:hover{color:var(--text);background:rgba(255,255,255,.06)}
+  .nav-cta{padding:11px 21px;border-radius:13px;font-weight:600;font-size:14.5px;color:var(--text);
+    background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.04));
+    border:1px solid var(--stroke);
+    box-shadow:0 1px 0 rgba(255,255,255,.14) inset,0 8px 24px -14px rgba(124,58,237,.6);
+    transition:.28s cubic-bezier(.2,.7,.2,1)}
+  .nav-cta:hover{transform:translateY(-1px);border-color:rgba(180,168,255,.5);
+    box-shadow:0 1px 0 rgba(255,255,255,.2) inset,0 0 0 4px rgba(139,92,246,.14),0 12px 30px -14px rgba(124,58,237,.8)}
+  @media(max-width:900px){.nav-links{display:none}}
+
+  /* ============ HERO ============ */
+  .hero{position:relative;z-index:4;min-height:calc(100vh - 80px);
+    display:flex;align-items:center;overflow:hidden;padding:46px 0 56px}
+  .wrap{position:relative;z-index:6;max-width:var(--maxw);margin:0 auto;
+    padding:0 24px;width:100%}
+  .hero-copy{max-width:580px;text-align:left}
+
+  .badge{display:inline-flex;align-items:center;gap:10px;padding:9px 17px 9px 13px;border-radius:999px;
+    background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.03));
+    border:1px solid var(--stroke);
+    box-shadow:0 1px 0 rgba(255,255,255,.14) inset,0 10px 30px -18px rgba(124,58,237,.7);
+    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+    font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--violet-soft);font-weight:600}
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--violet-2);
+    box-shadow:0 0 0 4px rgba(168,85,247,.22),0 0 12px 2px rgba(168,85,247,.9);animation:pulse 2.4s infinite}
+  @keyframes pulse{50%{box-shadow:0 0 0 8px rgba(168,85,247,0),0 0 14px 3px rgba(168,85,247,.5)}}
+
+  h1{font-family:'Space Grotesk';font-weight:700;line-height:1.03;letter-spacing:-.022em;
+    font-size:clamp(42px,5.4vw,72px);margin:26px 0 0;
+    text-shadow:0 2px 40px rgba(0,0,0,.5)}
+  h1 .grad{
+    background:linear-gradient(100deg,var(--violet-2) 0%,var(--indigo) 38%,var(--cyan) 70%,var(--violet-2) 100%);
+    background-size:240% 100%;
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    -webkit-text-fill-color:transparent;
+    animation:sweep 7s ease-in-out infinite;
+    filter:drop-shadow(0 6px 26px rgba(124,58,237,.45))}
+  @keyframes sweep{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+  .sub{margin:24px 0 0;max-width:47ch;font-size:clamp(16px,1.5vw,19px);
+    color:var(--muted);line-height:1.62}
+
+  .cta{display:flex;gap:15px;flex-wrap:wrap;margin-top:38px}
+  .btn{padding:16px 30px;border-radius:15px;font-weight:600;font-size:16px;cursor:pointer;
+    transition:.3s cubic-bezier(.2,.7,.2,1);border:1px solid transparent;
+    display:inline-flex;align-items:center;gap:10px;position:relative;overflow:hidden}
+  .btn-primary{color:#fff;
+    background:linear-gradient(135deg,var(--violet) 0%,var(--indigo) 60%,var(--violet-2) 100%);
+    box-shadow:0 1px 0 rgba(255,255,255,.28) inset,0 14px 38px -10px rgba(124,58,237,.7),
+               0 0 0 1px rgba(180,168,255,.25)}
+  .btn-primary::after{content:"";position:absolute;inset:0;border-radius:inherit;
+    background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.32) 50%,transparent 70%);
+    transform:translateX(-120%);transition:.6s}
+  .btn-primary:hover{transform:translateY(-2px);
+    box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 20px 50px -10px rgba(124,58,237,.95),
+               0 0 0 1px rgba(180,168,255,.4)}
+  .btn-primary:hover::after{transform:translateX(120%)}
+  .btn-ghost{color:var(--text);
+    background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
+    border-color:var(--stroke);
+    box-shadow:0 1px 0 rgba(255,255,255,.12) inset;
+    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+  .btn-ghost:hover{transform:translateY(-2px);border-color:rgba(180,168,255,.5);
+    background:linear-gradient(180deg,rgba(139,92,246,.16),rgba(139,92,246,.05));
+    box-shadow:0 1px 0 rgba(255,255,255,.2) inset,0 0 0 4px rgba(139,92,246,.12)}
+
+  /* ============ STAT CHIPS — frosted glass ============ */
+  .stats{display:flex;gap:14px;flex-wrap:wrap;margin-top:46px}
+  .stat{position:relative;padding:16px 22px;border-radius:18px;min-width:120px;
+    background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.025));
+    border:1px solid rgba(255,255,255,.10);
+    box-shadow:0 1px 0 rgba(255,255,255,.16) inset,0 16px 40px -26px rgba(0,0,0,.9),
+               0 0 0 1px rgba(120,100,255,.05);
+    -webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%);
+    transition:.32s cubic-bezier(.2,.7,.2,1);overflow:hidden}
+  .stat::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(200,190,255,.7),transparent)}
+  .stat:hover{transform:translateY(-3px);border-color:rgba(180,168,255,.28);
+    box-shadow:0 1px 0 rgba(255,255,255,.22) inset,0 22px 46px -22px rgba(124,58,237,.6),
+               0 0 0 1px rgba(160,140,255,.12)}
+  .stat .num{font-family:'Space Grotesk';font-weight:700;font-size:30px;line-height:1;
+    background:linear-gradient(120deg,#ffffff 0%,var(--violet-soft) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+  .stat .lbl{color:var(--muted);font-size:12.5px;margin-top:7px;line-height:1.3;letter-spacing:.01em}
+
+  /* ============ HERO PHOTO — melts into aurora ============ */
+  .hero-photo{position:absolute;top:0;right:0;bottom:0;width:62%;z-index:5;
+    display:flex;align-items:center;justify-content:flex-end;overflow:hidden}
+  .hero-photo .glow{position:absolute;right:2%;top:50%;transform:translateY(-50%);
+    width:82%;height:80%;z-index:0;
+    background:radial-gradient(58% 60% at 62% 48%,rgba(124,58,237,.55) 0%,rgba(79,91,255,.28) 40%,transparent 72%);
+    filter:blur(60px);animation:glowPulse 8s ease-in-out infinite}
+  @keyframes glowPulse{50%{opacity:.7;transform:translateY(-50%) scale(1.06)}}
+  .hero-photo img{position:relative;z-index:1;width:100%;height:auto;max-height:96%;
+    object-fit:contain;
+    -webkit-mask-image:linear-gradient(to right,transparent 0,#000 34%,#000 100%),
+                       linear-gradient(to bottom,transparent 0,#000 6%,#000 94%,transparent 100%);
+    -webkit-mask-composite:source-in;
+    mask-image:linear-gradient(to right,transparent 0,#000 34%,#000 100%),
+               linear-gradient(to bottom,transparent 0,#000 6%,#000 94%,transparent 100%);
+    mask-composite:intersect;
+    filter:drop-shadow(0 30px 70px rgba(0,0,0,.55));
+    animation:floatY 10s ease-in-out infinite}
+  @keyframes floatY{50%{transform:translateY(-10px)}}
+
+  /* ============ RESPONSIVE ============ */
+  @media(max-width:980px){
+    .hero{flex-direction:column;min-height:auto;padding:18px 0 8px}
+    .hero-copy{max-width:none;text-align:center;margin:0 auto}
+    .sub{margin-left:auto;margin-right:auto}
+    .cta,.stats{justify-content:center}
+    .badge{margin:0 auto}
+    .hero-photo{position:relative;width:100%;height:auto;order:2;margin-top:26px;justify-content:center}
+    .hero-photo .glow{width:92%;height:74%;right:auto}
+    .hero-photo img{max-height:none;width:100%;
+      -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 16%,#000 94%,transparent 100%);
+      mask-image:linear-gradient(to bottom,transparent 0,#000 16%,#000 94%,transparent 100%)}
+  }
+  @media(max-width:540px){
+    .stats{gap:10px}.stat{min-width:0;flex:1 1 28%;padding:13px 14px}
+    .stat .num{font-size:25px}.stat .lbl{font-size:11px}
+    .btn{padding:14px 24px;font-size:15px}
+  }
+
+  /* ============ ENTRANCE ============ */
+  .rv{opacity:0;transform:translateY(28px);animation:rise 1s cubic-bezier(.2,.75,.2,1) forwards}
+  .d1{animation-delay:.10s}.d2{animation-delay:.22s}.d3{animation-delay:.36s}
+  .d4{animation-delay:.50s}.d5{animation-delay:.64s}.d6{animation-delay:.80s}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .rv-img{opacity:0;transform:translateX(34px) scale(.985);
+    animation:riseImg 1.3s cubic-bezier(.2,.75,.2,1) .30s forwards}
+  @keyframes riseImg{to{opacity:1;transform:none}}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important}
+    .rv,.rv-img{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+  <div class="aurora">
+    <div class="grid"></div>
+    <div class="blob a1"></div>
+    <div class="blob a2"></div>
+    <div class="blob a3"></div>
+    <div class="blob a4"></div>
+  </div>
+  <div class="grain"></div>
+  <div class="vignette"></div>
+
+  <header class="nav" id="nav">
+    <div class="nav-in">
+      <div class="logo"><span class="mark">✦</span> Studio</div>
+      <nav class="nav-links">
+        <a href="#">Услуги</a><a href="#">Кейсы</a><a href="#">Команда</a><a href="#">Контакты</a>
+      </nav>
+      <a href="#" class="nav-cta">Обсудить проект</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-photo rv-img">
+      <span class="glow"></span>
+      <img src="assets/hero-team.png" alt="Наша продуктовая команда за работой" />
+    </div>
+
+    <div class="wrap">
+      <div class="hero-copy">
+        <span class="badge rv d1"><span class="dot"></span>Продуктовая команда полного цикла</span>
+
+        <h1 class="rv d2">Создаём цифровые продукты <span class="grad">под ключ</span></h1>
+
+        <p class="sub rv d3">
+          Дизайн, разработка и маркетинг — одной слаженной командой.
+          От идеи и прототипа до запуска и роста продукта.
+        </p>
+
+        <div class="cta rv d4">
+          <a href="#" class="btn btn-primary">Обсудить проект →</a>
+          <a href="#" class="btn btn-ghost">Смотреть кейсы</a>
+        </div>
+
+        <div class="stats rv d5">
+          <div class="stat"><div class="num">30+</div><div class="lbl">проектов<br>запущено</div></div>
+          <div class="stat"><div class="num">6</div><div class="lbl">профильных<br>экспертов</div></div>
+          <div class="stat"><div class="num">5 лет</div><div class="lbl">в<br>разработке</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const nav=document.getElementById('nav');
+    addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>20),{passive:true});
+  </script>
+</body>
+</html>
