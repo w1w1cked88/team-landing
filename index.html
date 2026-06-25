@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Студия — продуктовая команда</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#07060e;
+    --bg2:#0c0a1a;
+    --violet:#8b5cf6;
+    --violet-2:#a855f7;
+    --violet-soft:#c4b5fd;
+    --cyan:#22d3ee;
+    --text:#f4f3fb;
+    --muted:#9b99b3;
+    --card:rgba(255,255,255,.04);
+    --stroke:rgba(168,150,250,.18);
+    --maxw:1240px;
+    --r:26px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    background:var(--bg); color:var(--text);
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+
+  /* ---------- ambient background ---------- */
+  .bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+  .blob{position:absolute;border-radius:50%;filter:blur(110px);opacity:.55}
+  .b1{width:720px;height:620px;left:50%;top:-180px;transform:translateX(-50%);
+      background:radial-gradient(circle,#5b21b6,transparent 65%)}
+  .b2{width:560px;height:560px;left:-160px;top:380px;
+      background:radial-gradient(circle,#1e3a8a,transparent 65%);opacity:.5}
+  .b3{width:560px;height:560px;right:-160px;top:220px;
+      background:radial-gradient(circle,#7e1f6b,transparent 65%);opacity:.45}
+  .grid{position:absolute;inset:0;
+    background-image:linear-gradient(rgba(150,140,220,.05) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(150,140,220,.05) 1px,transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 30%,#000 40%,transparent 80%);
+    -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 30%,#000 40%,transparent 80%);}
+  .noise{position:absolute;inset:0;opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+  /* ---------- nav ---------- */
+  header.nav{position:sticky;top:0;z-index:50;transition:.3s}
+  header.nav.scrolled{backdrop-filter:blur(14px);background:rgba(8,7,16,.7);
+    border-bottom:1px solid rgba(255,255,255,.06)}
+  .nav-in{max-width:var(--maxw);margin:0 auto;padding:18px 24px;
+    display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk';font-weight:700;font-size:20px;letter-spacing:.2px}
+  .logo .mark{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--violet),var(--violet-2));
+    box-shadow:0 6px 20px rgba(139,92,246,.45);font-size:18px}
+  .nav-links{display:flex;gap:30px;font-size:15px;color:var(--muted)}
+  .nav-links a{transition:.2s}.nav-links a:hover{color:var(--text)}
+  .nav-cta{padding:10px 20px;border-radius:12px;font-weight:600;font-size:15px;
+    border:1px solid var(--stroke);background:var(--card);transition:.25s}
+  .nav-cta:hover{border-color:var(--violet);box-shadow:0 0 0 3px rgba(139,92,246,.15)}
+  @media(max-width:860px){.nav-links{display:none}}
+
+  /* ---------- hero (split: text left, photo right) ---------- */
+  .hero{position:relative;z-index:1;min-height:calc(100vh - 80px);
+    display:flex;align-items:center;overflow:hidden;padding:48px 0}
+  .wrap{position:relative;z-index:3;max-width:var(--maxw);margin:0 auto;
+    padding:0 24px;width:100%}
+  .hero-copy{max-width:560px;text-align:left}
+  .badge{display:inline-flex;align-items:center;gap:9px;padding:9px 18px;border-radius:999px;
+    background:rgba(139,92,246,.12);border:1px solid var(--stroke);
+    font-size:13.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--violet-soft);font-weight:600}
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:var(--violet-2);
+    box-shadow:0 0 0 4px rgba(168,85,247,.2);animation:pulse 2s infinite}
+  @keyframes pulse{50%{box-shadow:0 0 0 7px rgba(168,85,247,0)}}
+
+  h1{font-family:'Space Grotesk';font-weight:700;line-height:1.04;letter-spacing:-.02em;
+    font-size:clamp(40px,5vw,68px);margin:24px 0 0}
+  h1 .grad{background:linear-gradient(100deg,var(--violet-2),var(--cyan));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{margin:22px 0 0;max-width:46ch;font-size:clamp(16px,1.5vw,19px);
+    color:var(--muted);line-height:1.6}
+
+  .cta{display:flex;gap:16px;justify-content:flex-start;flex-wrap:wrap;margin-top:36px}
+  .btn{padding:16px 30px;border-radius:14px;font-weight:600;font-size:16.5px;cursor:pointer;
+    transition:.25s;border:1px solid transparent;display:inline-flex;align-items:center;gap:10px}
+  .btn-primary{background:linear-gradient(135deg,var(--violet),var(--violet-2));color:#fff;
+    box-shadow:0 12px 34px rgba(139,92,246,.42)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 44px rgba(139,92,246,.6)}
+  .btn-ghost{background:var(--card);border-color:var(--stroke);color:var(--text)}
+  .btn-ghost:hover{border-color:var(--violet);background:rgba(139,92,246,.1)}
+
+  .stats{display:flex;gap:40px;justify-content:flex-start;flex-wrap:wrap;margin-top:44px}
+  .stat .num{font-family:'Space Grotesk';font-weight:700;font-size:30px;
+    background:linear-gradient(120deg,#fff,var(--violet-soft));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stat .lbl{color:var(--muted);font-size:14px;margin-top:3px}
+
+  /* ---------- hero photo (anchored right, blended into section) ---------- */
+  .hero-photo{position:absolute;top:0;right:0;bottom:0;width:60%;z-index:1;
+    display:flex;align-items:center;justify-content:flex-end;overflow:hidden}
+  .hero-photo .glow{position:absolute;right:4%;top:50%;transform:translateY(-50%);
+    width:78%;height:74%;z-index:0;
+    background:radial-gradient(55% 60% at 60% 50%,rgba(139,92,246,.5),transparent 70%);
+    filter:blur(64px)}
+  .hero-photo img{position:relative;z-index:1;width:100%;height:auto;max-height:94%;
+    object-fit:contain;
+    -webkit-mask-image:linear-gradient(to right,transparent 0,#000 26%,#000 100%),
+                       linear-gradient(to bottom,transparent 0,#000 8%,#000 92%,transparent 100%);
+    -webkit-mask-composite:source-in;
+    mask-image:linear-gradient(to right,transparent 0,#000 26%,#000 100%),
+               linear-gradient(to bottom,transparent 0,#000 8%,#000 92%,transparent 100%);
+    mask-composite:intersect;
+    animation:floatY 9s ease-in-out infinite}
+  @keyframes floatY{50%{transform:translateY(-9px)}}
+
+  @media(max-width:980px){
+    .hero{flex-direction:column;min-height:auto;padding:24px 0 0}
+    .hero-copy{max-width:none;text-align:center;margin:0 auto}
+    .sub{margin-left:auto;margin-right:auto}
+    .cta,.stats{justify-content:center}
+    .hero-photo{position:relative;width:100%;height:auto;order:2;margin-top:28px}
+    .hero-photo .glow{width:90%;height:70%}
+    .hero-photo img{max-height:none;
+      -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 14%,#000 92%,transparent 100%);
+      mask-image:linear-gradient(to bottom,transparent 0,#000 14%,#000 92%,transparent 100%)}
+  }
+
+  /* ---------- reveal ---------- */
+  .rv{opacity:0;transform:translateY(26px);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards}
+  .d1{animation-delay:.05s}.d2{animation-delay:.18s}.d3{animation-delay:.31s}
+  .d4{animation-delay:.44s}.d5{animation-delay:.57s}.d6{animation-delay:.74s}
+  @keyframes rise{to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+  <div class="bg">
+    <div class="grid"></div>
+    <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+    <div class="noise"></div>
+  </div>
+
+  <header class="nav" id="nav">
+    <div class="nav-in">
+      <div class="logo"><span class="mark">✦</span> Studio</div>
+      <nav class="nav-links">
+        <a href="#">Услуги</a><a href="#">Кейсы</a><a href="#">Команда</a><a href="#">Контакты</a>
+      </nav>
+      <a href="#" class="nav-cta">Обсудить проект</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-photo rv d3">
+      <span class="glow"></span>
+      <img src="assets/hero-team.png" alt="Наша продуктовая команда за работой" />
+    </div>
+
+    <div class="wrap">
+      <div class="hero-copy">
+        <span class="badge rv d1"><span class="dot"></span>Продуктовая команда полного цикла</span>
+
+        <h1 class="rv d2">Создаём цифровые продукты <span class="grad">под ключ</span></h1>
+
+        <p class="sub rv d3">
+          Дизайн, разработка и маркетинг — одной слаженной командой.
+          От идеи и прототипа до запуска и роста продукта.
+        </p>
+
+        <div class="cta rv d4">
+          <a href="#" class="btn btn-primary">Обсудить проект →</a>
+          <a href="#" class="btn btn-ghost">Смотреть кейсы</a>
+        </div>
+
+        <div class="stats rv d5">
+          <div class="stat"><div class="num">30+</div><div class="lbl">проектов запущено</div></div>
+          <div class="stat"><div class="num">6</div><div class="lbl">профильных экспертов</div></div>
+          <div class="stat"><div class="num">5 лет</div><div class="lbl">в разработке</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const nav=document.getElementById('nav');
+    addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>20));
+  </script>
+</body>
+</html>
